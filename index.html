@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIGMA.XYZ</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-theme="killer">
+    <div class="bg-grid"></div>
+    <div class="bg-noise"></div>
+    <div class="bg-glow glow-a"></div>
+    <div class="bg-glow glow-b"></div>
+
+    <main class="page">
+      <section class="hero reveal">
+        <div class="hero-main panel">
+          <div class="hero-topline">
+            <p class="eyebrow">SIGMA.XYZ</p>
+            <div class="hero-actions">
+              <span class="hero-badge">owner: @idkrealkiller2020</span>
+              <div class="theme-switcher" id="theme-switcher">
+                <button type="button" class="theme-chip active" data-theme="killer">Killer</button>
+                <button type="button" class="theme-chip" data-theme="sigma">Sigma</button>
+                <button type="button" class="theme-chip" data-theme="ice">Ice</button>
+                <button type="button" class="theme-chip" data-theme="kaneki">Kaneki</button>
+                <button type="button" class="theme-chip" data-theme="astolfo">Astolfo</button>
+              </div>
+            </div>
+          </div>
+          <h1>SIGMA.XYZ</h1>
+          <p class="lead">
+            Локальная консоль для анализа аккаунтов и ников из VK, Telegram и Discord.
+            Добавлены theme switcher, заметки по кейсу, quick chain visualization и более удобный
+            workflow под `Discord username / Discord ID`. Интерфейс не обещает магически достать
+            старые ники и аватарки без реального источника истории, но собирает все публичные пивоты
+            и следы в одном месте.
+          </p>
+
+          <div class="hero-band">
+            <div class="hero-mark">
+              <span class="hero-mark-line"></span>
+              <strong>SX</strong>
+            </div>
+            <div class="hero-copy-grid">
+              <article class="hero-chip">
+                <span>Lookup</span>
+                <strong>Discord traces</strong>
+              </article>
+              <article class="hero-chip">
+                <span>History</span>
+                <strong>Public nickname pivots</strong>
+              </article>
+              <article class="hero-chip">
+                <span>Notes</span>
+                <strong>Local case memory</strong>
+              </article>
+              <article class="hero-chip">
+                <span>Chain</span>
+                <strong>Fast visual graph</strong>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-side panel">
+          <p class="section-kicker">Loadout</p>
+          <div class="mini-stat-grid">
+            <article class="mini-stat">
+              <span class="mini-stat-label">Mode</span>
+              <strong>Local</strong>
+            </article>
+            <article class="mini-stat">
+              <span class="mini-stat-label">Themes</span>
+              <strong>5</strong>
+            </article>
+            <article class="mini-stat">
+              <span class="mini-stat-label">Lookup</span>
+              <strong>History Mode</strong>
+            </article>
+          </div>
+          <ul class="sample-list">
+            <li><code>vk.com/durov</code></li>
+            <li><code>https://vk.com/id1</code></li>
+            <li><code>@idkrealkiller2020</code></li>
+            <li><code>name#1234</code></li>
+            <li><code>175928847299117063</code></li>
+            <li><code>https://cdn.discordapp.com/avatars/...</code></li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="workspace reveal delay-1">
+        <section class="composer panel">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Analyzer</p>
+              <h2>Case Intake</h2>
+            </div>
+            <div class="action-row">
+              <button type="button" id="clear-btn" class="ghost-btn">Очистить</button>
+              <button type="button" id="analyze-btn" class="primary-btn">Run Analysis</button>
+            </div>
+          </div>
+
+          <label class="field-label" for="profile-input">Discord username, Discord id, VK или Telegram ссылка</label>
+          <textarea
+            id="profile-input"
+            class="input-box"
+            placeholder="Например: 1188775073876807680, @idkrealkiller2020, name#1234 или vk.com/durov"
+          ></textarea>
+
+          <div class="quick-row">
+            <button type="button" class="chip-btn" data-sample="vk.com/durov">VK sample</button>
+            <button type="button" class="chip-btn" data-sample="t.me/telegram">Telegram sample</button>
+            <button type="button" class="chip-btn" data-sample="@idkrealkiller2020">Discord user</button>
+            <button type="button" class="chip-btn" data-sample="1188775073876807680">Snowflake</button>
+          </div>
+
+          <div class="hint-row">
+            <span>Hotkey: <code>Ctrl + Enter</code></span>
+            <span>Если сервер не запущен, интерфейс покажет понятную ошибку вместо `Failed to fetch`</span>
+            <span>Для старых ников и аватарок Discord нужен реальный архивный источник, а не только ID</span>
+          </div>
+
+          <section class="status-card" id="status-card">Вставь данные и нажми Run Analysis.</section>
+        </section>
+
+        <aside class="sidebar">
+          <section class="panel side-card accent-card">
+            <div class="section-head compact">
+              <div>
+                <p class="section-kicker">VK Quick Resolve</p>
+                <h3>Numeric ID</h3>
+              </div>
+            </div>
+            <form id="vk-resolve-form" class="mini-form">
+              <input id="vk-url" type="text" class="soft-input" placeholder="vk.com/durov" autocomplete="off" />
+              <button type="submit" class="secondary-btn">Resolve</button>
+            </form>
+            <div class="mini-result" id="vk-result">Пока пусто</div>
+            <button type="button" id="copy-vk-btn" class="ghost-btn" disabled>Скопировать id</button>
+          </section>
+
+          <section class="panel side-card">
+            <div class="section-head compact">
+              <div>
+                <p class="section-kicker">Current Case</p>
+                <h3>Operational Snapshot</h3>
+              </div>
+            </div>
+            <div class="case-meta">
+              <div class="meta-pair">
+                <span>Платформа</span>
+                <strong id="meta-platform">Пока нет</strong>
+              </div>
+              <div class="meta-pair">
+                <span>Поля</span>
+                <strong id="meta-identities">0</strong>
+              </div>
+              <div class="meta-pair">
+                <span>Инструменты</span>
+                <strong id="meta-tools">0</strong>
+              </div>
+              <div class="meta-pair">
+                <span>Подсказки</span>
+                <strong id="meta-notes">0</strong>
+              </div>
+            </div>
+            <p class="side-text" id="meta-summary">
+              После анализа тут появится короткая сводка по кейсу.
+            </p>
+            <button type="button" id="export-btn" class="ghost-btn" disabled>Экспорт JSON</button>
+          </section>
+        </aside>
+      </section>
+
+      <section class="dashboard">
+        <article class="panel result-panel overview-panel reveal delay-2">
+          <div class="section-head compact">
+            <div>
+              <p class="section-kicker">Overview</p>
+              <h2 id="overview-title">Ничего не выбрано</h2>
+            </div>
+            <span class="platform-pill" id="platform-pill">idle</span>
+          </div>
+          <p class="overview-text" id="overview-subtitle">
+            Запусти анализ, и здесь появится краткое описание текущего набора данных.
+          </p>
+          <div class="overview-stats">
+            <article class="overview-stat">
+              <span>Поля</span>
+              <strong id="overview-identities">0</strong>
+            </article>
+            <article class="overview-stat">
+              <span>Инструменты</span>
+              <strong id="overview-tools">0</strong>
+            </article>
+            <article class="overview-stat">
+              <span>Разделы</span>
+              <strong id="overview-categories">0</strong>
+            </article>
+          </div>
+        </article>
+
+        <article class="panel result-panel reveal delay-3">
+          <div class="section-head compact">
+            <div>
+              <p class="section-kicker">Identity</p>
+              <h2>Извлеченные поля</h2>
+            </div>
+          </div>
+          <div id="identity-list" class="identity-list empty-state">Пока нет данных.</div>
+        </article>
+
+        <article class="panel result-panel reveal delay-4">
+          <div class="section-head compact">
+            <div>
+              <p class="section-kicker">Tool Sections</p>
+              <h2>Сервисы по соцсетям</h2>
+            </div>
+            <div id="tool-filters" class="tool-filters"></div>
+          </div>
+          <div id="tool-groups" class="tool-groups empty-state">После анализа тут появятся секции сервисов.</div>
+        </article>
+
+        <article class="panel result-panel reveal delay-5">
+          <div class="section-head compact">
+            <div>
+              <p class="section-kicker">Chain View</p>
+              <h2>Быстрая цепочка</h2>
+            </div>
+          </div>
+          <div id="chain-view" class="chain-view empty-state">После анализа здесь появится визуальная цепь.</div>
+        </article>
+
+        <article class="panel result-panel reveal delay-6">
+          <div class="section-head compact">
+            <div>
+              <p class="section-kicker">Notes</p>
+              <h2>Подсказки</h2>
+            </div>
+          </div>
+          <div id="note-list" class="note-list empty-state">Подсказки появятся после анализа.</div>
+        </article>
+
+        <article class="panel result-panel reveal delay-7">
+          <div class="section-head compact">
+            <div>
+              <p class="section-kicker">Case Notes</p>
+              <h2>Личные заметки</h2>
+            </div>
+          </div>
+          <textarea id="case-notes" class="notes-box" placeholder="Твои заметки по кейсу сохраняются локально..."></textarea>
+        </article>
+
+        <article class="panel result-panel history-panel reveal delay-8">
+          <div class="section-head compact">
+            <div>
+              <p class="section-kicker">History</p>
+              <h2>Последние кейсы</h2>
+            </div>
+            <button type="button" id="clear-history-btn" class="ghost-btn small-btn">Очистить</button>
+          </div>
+          <div id="history-list" class="history-list empty-state">История пока пуста.</div>
+        </article>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
